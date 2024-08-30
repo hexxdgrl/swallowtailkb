@@ -1,0 +1,476 @@
+meta:
+
+units:
+  capx: 18
+  capy: 18
+  kx: 15.6
+  ky: 15.6
+  pinky_splay: 5
+  pinky_adj: -3
+  ring_splay: 8
+  ring_adj: -10
+  middle_splay: 8
+  middle_adj: -10
+  index_splay: 3
+  index_adj: -4
+  thumbsplay: 20
+  thumb_offset: -14
+  angle: 30
+  $default_height: 0
+  $default_width: 0
+  xiao_x: 17.5
+  xiao_y: 32.5
+  sf: 16
+  px: 2.5
+  py: 2.5
+
+points:
+  key:
+    footprints:
+      mx_hotswap:
+        type: mx
+        params:
+          hotswap: true
+          keycaps: true
+        nets:
+          from: =colrow
+          to: =column_net
+      diode:
+        type: diode
+        nets:
+          from: =colrow
+          to: =row_net
+        anchor:
+          shift: [0, -5]
+  zones.matrix:
+    anchor.shift: [100, -100]
+    rotate: -angle + pinky_splay + ring_splay
+    mirror:
+      ref: matrix_inner_top
+      shift: [0.5sf, 0.5sf]
+      distance: 13
+    key:
+      width: capx
+      height: capy
+      spread: capx + px
+      padding: capy + py
+      autobind: 0
+    rows:
+      bottom:
+      home:
+      top:
+    columns:
+      outer:
+      pinky:
+      ring:
+      middle:
+      index:
+      inner:
+    columns.outer:
+      rows:
+        bottom.skip: true
+        home:
+          row_net: P3
+          column_net: P21
+          bind: [0.5ky, 0.5kx, 0, 0]
+        home.mirror:
+          row_net: P3
+          column_net: P9
+        top:
+          bind: [0, 0.5kx, 0.5ky, 0]
+          row_net: P2
+          column_net: P21
+        top.mirror:
+          row_net: P2
+          column_net: P9
+    columns.pinky:
+      key:
+        stagger: 2/3ky
+        splay: -pinky_splay
+        origin: [0, pinky_adj]
+      rows:
+        bottom:
+          row_net: P4
+          column_net: P20
+        home:
+          row_net: P3
+          column_net: P20
+        top:
+          row_net: P2
+          column_net: P20
+        bottom.mirror:
+          row_net: P4
+          column_net: P8
+        home.mirror:
+          row_net: P3
+          column_net: P8
+        top.mirror:
+          row_net: P2
+          column_net: P8
+    columns.ring:
+      key:
+        stagger: 3/5ky
+        splay: -ring_splay
+        origin: [0, ring_adj]
+      rows:
+        bottom:
+          row_net: P4
+          column_net: P19
+        home:
+          row_net: P3
+          column_net: P19
+        top:
+          row_net: P2
+          column_net: P19
+        bottom.mirror:
+          row_net: P4
+          column_net: P7
+        home.mirror:
+          row_net: P3
+          column_net: P7
+        top.mirror:
+          row_net: P2
+          column_net: P7
+
+    columns.middle:
+      key:
+        stagger: 1/2ky
+        splay: -middle_splay
+        origin: [0, middle_adj]
+      rows:
+        bottom:
+          row_net: P4
+          column_net: P18
+        home:
+          row_net: P3
+          column_net: P18
+        top:
+          row_net: P2
+          column_net: P18
+        bottom.mirror:
+          row_net: P4
+          column_net: P6
+        home.mirror:
+          row_net: P3
+          column_net: P6
+        top.mirror:
+          row_net: P2
+          column_net: P6
+    columns.index:
+      key:
+        stagger: -(4/5ky)
+        splay: -index_splay
+        origin: [0, index_adj]
+      rows:
+        bottom:
+          row_net: P4
+          column_net: P15
+        home:
+          row_net: P3
+          column_net: P15
+        top:
+          row_net: P2
+          column_net: P15
+        bottom.mirror:
+          row_net: P4
+          column_net: P10
+        home.mirror:
+          row_net: P3
+          column_net: P10
+        top.mirror:
+          row_net: P2
+          column_net: P10
+    columns.inner:
+      key:
+        stagger: -(2/3ky)
+      rows:
+        bottom.skip: true
+        home:
+          row_net: P3
+          column_net: P14
+        top:
+          row_net: P2
+          column_net: P14
+        home.mirror:
+          row_net: P3
+          column_net: P16
+        top.mirror:
+          row_net: P2
+          column_net: P16
+  zones.thumbcluster:
+    anchor:
+      ref: matrix_index_bottom
+      shift: [-.5kx, -22]
+    mirror.$extends: points.zones.matrix.mirror
+    key.$extends: points.zones.matrix.key
+    columns:
+      near:
+      home:
+      far:
+      farthest:
+    rows:
+      thumb:
+    columns.near:
+      key:
+      rows:
+        thumb:
+          row_net: P5
+          column_net: P19
+        thumb.mirror:
+          row_net: P5
+          column_net: P7
+    columns.home:
+      key:
+        splay: -thumbsplay
+        origin: [-10, thumb_offset]
+      rows:
+        thumb:
+          row_net: P5
+          column_net: P18
+        thumb.mirror:
+          row_net: P5
+          column_net: P6
+    columns.far:
+      key:
+        splay: -thumbsplay
+        origin: [-10, thumb_offset]
+      rows:
+        thumb:
+          row_net: P5
+          column_net: P15
+        thumb.mirror:
+          row_net: P5
+          column_net: P10
+    columns.farthest:
+      key:
+        splay: -thumbsplay
+        origin: [-10, thumb_offset]
+      rows:
+        thumb:
+          row_net: P5
+          column_net: P14
+        thumb.mirror:
+          row_net: P5
+          column_net: P16
+  zones.reference_top_center:
+    anchor:
+      aggregate.parts: [matrix_inner_top, mirror_matrix_inner_top]
+      shift: [0, -0.65ky]
+  zones.mcu:
+    anchor:
+      ref: reference_top_center
+      shift: [0, (52+ -0.5xiao_y)]
+    key:
+      width: xiao_x
+      height: xiao_y
+  zones.mounting_hole_inner_bottom:
+    anchor:
+      ref: matrix_inner_home
+      shift: [0, -ky]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_outer_bottom:
+    anchor:
+      ref: matrix_outer_home
+      shift: [0, -0.75ky]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_middle:
+    anchor:
+      ref: matrix_middle_home
+      shift: [-0.5kx-4, 5]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_inner_top:
+    anchor:
+      ref: matrix_inner_top
+      shift: [0.5kx - 14, ky - 3]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_outer_top:
+    anchor:
+      ref: matrix_outer_top
+      shift: [0, 0.75ky]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_outer_thumb:
+    anchor:
+      ref: thumbcluster_near_thumb
+      shift: [0.5kx - 23, 0]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+  zones.mounting_hole_inner_thumb:
+    anchor:
+      ref: thumbcluster_farthest_thumb
+      shift: [0.5kx + 4, 0]
+    mirror.$extends: points.zones.matrix.mirror
+    key:
+      width: 1
+      height: 1
+outlines:
+  raw:
+    - what: rectangle
+      where:
+        - /thumbcluster_*/
+        - /matrix_*/
+      asym: source
+      size: [kx + px, ky + py]
+      corner: px
+  key_punchout:
+    - what: rectangle
+      where:
+        - /thumbcluster_*/
+        - /matrix_*/
+      asym: source
+      size: [kx, ky]
+  mcu_punchout:
+    - what: rectangle
+      where:
+        - /mcu/
+      size: [xiao_x+1, xiao_y+1]
+  plate:
+    - what: polygon
+      fillet: 5
+      points:
+        - ref: matrix_middle_top
+          shift: [0.5kx+px, 0.5kx+py]
+        - ref: matrix_middle_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: matrix_ring_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: matrix_pinky_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: matrix_outer_top
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: matrix_outer_home
+          shift: [-0.5kx-px, -0.5ky-py-2]
+        - ref: matrix_pinky_bottom
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: matrix_pinky_bottom
+          shift: [0.5kx+px, -0.5ky-py]
+        - ref: thumbcluster_near_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: thumbcluster_home_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+px+5, -0.5ky-py]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+px+5, 0.5ky+py]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: thumbcluster_far_thumb
+          shift: [0.5kx+px, 0.5ky+py]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: matrix_inner_home
+          shift: [0.5kx+px, -0.5ky-py]
+        - ref: matrix_inner_home
+          shift: [0.5kx+px, 0.5ky+py]
+        - ref: mirror_matrix_inner_home
+          shift: [0.5kx+px, 0.5ky+py]
+        - ref: mirror_matrix_inner_home
+          shift: [0.5kx+px, -0.5ky-py]
+        - ref: mirror_thumbcluster_far_thumb
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: mirror_thumbcluster_far_thumb
+          shift: [0.5kx+px, 0.5ky+py]
+        - ref: mirror_thumbcluster_farthest_thumb
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: mirror_thumbcluster_farthest_thumb
+          shift: [0.5kx+px+5, 0.5ky+py]
+        - ref: mirror_thumbcluster_farthest_thumb
+          shift: [0.5kx+px+5, -0.5ky-py]
+        - ref: mirror_thumbcluster_farthest_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: mirror_thumbcluster_far_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: mirror_thumbcluster_home_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: mirror_thumbcluster_near_thumb
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [0.5kx+px, -0.5ky-py]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-0.5kx-px, -0.5ky-py]
+        - ref: mirror_matrix_outer_home
+          shift: [-0.5kx-px, -0.5ky-py-2]
+        - ref: mirror_matrix_outer_top
+          shift: [-0.5kx-px, 0.5ky+py]
+        - ref: mirror_matrix_pinky_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: mirror_matrix_ring_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: mirror_matrix_middle_top
+          shift: [-0.5kx-px, 0.5kx+py]
+        - ref: mirror_matrix_middle_top
+          shift: [0.5kx+px, 0.5kx+py]
+  screw_holes:
+    - what: circle
+      where:
+        - /mounting_hole_*/
+      radius: 1
+  screw_sockets:
+    - what: circle
+      where:
+        - /mounting_hole_*/
+      radius: 1.2
+  baseplate:
+    - raw
+    - +plate
+    - -screw_holes
+  pcb_outline:
+    - raw
+    - +plate
+  switchplate:
+    - plate
+    - -mcu_punchout
+    - -key_punchout
+    - -screw_sockets
+pcbs:
+  swallowtail:
+    outlines:
+      main:
+        outline: pcb_outline
+    footprints:
+      - what: mx
+        where:
+          - /matrix_.*/
+          - /thumbcluster_.*/
+        params:
+          hotswap: true
+          keycaps: true
+          from: "{{colrow}}"
+          to: "{{column_net}}"
+      - what: diode
+        where:
+          - /matrix_.*/
+          - /thumbcluster_.*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      - what: promicro
+        where:
+          ref:
+            - mcu
+          rotate: 270
+      - what: mountinghole
+        where:
+          - /mounting_hole_*/
