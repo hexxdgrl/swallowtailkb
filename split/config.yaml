@@ -1,0 +1,307 @@
+meta:
+
+units:
+  capx: 17.5
+  capy: 17.95
+  kx: 13.8
+  ky: 13.8
+  pinky_splay: 5
+  pinky_adj: -3
+  ring_splay: 8
+  ring_adj: -10
+  middle_splay: 8
+  middle_adj: -10
+  index_splay: 3
+  index_adj: -4
+  thumbsplay: 20
+  thumb_offset: -10
+  angle: 30
+  $default_height: 0
+  $default_width: 0
+  xiao_x: 17.5
+  xiao_y: 32.5
+  sf: 16
+  kp: 1
+  pcbp: 4
+
+points:
+  key:
+    footprints:
+      mx_hotswap:
+        type: choc
+        params:
+          hotswap: true
+          keycaps: true
+          reverse: true
+        nets:
+          from: =colrow
+          to: =column_net
+      diode:
+        type: diode
+        nets:
+          from: =colrow
+          to: =row_net
+        anchor:
+          shift: [0, -5]
+  zones.matrix:
+    anchor.shift: [100, -100]
+    key:
+      width: capx
+      height: capy
+      spread: capx + kp
+      padding: capy
+      autobind: 0
+    rows:
+      bottom:
+        row_net: P8
+      home:
+        row_net: P7
+      top:
+        row_net: P6
+    columns:
+      outer:
+        key.column_net: P19
+        rows:
+          bottom.skip: true
+      pinky:
+        key:
+          column_net: P18
+          stagger: 2/3ky
+          splay: -pinky_splay
+          origin: [0, pinky_adj]
+      ring:
+        key:
+          column_net: P15
+          stagger: 3/5ky
+          splay: -ring_splay
+          origin: [0, ring_adj]
+      middle:
+        key:
+          column_net: P14
+          stagger: 1/2ky
+          splay: -middle_splay
+          origin: [0, middle_adj]
+      index:
+        key:
+          column_net: P16
+          stagger: -(4/5ky)
+          splay: -index_splay
+          origin: [0, index_adj]
+      inner:
+        key:
+          column_net: P10
+          stagger: -(2/3ky)
+        rows:
+          bottom.skip: true
+  zones.thumbcluster:
+    anchor:
+      ref: matrix_index_bottom
+      shift: [-.5kx, -22]
+    key.$extends: points.zones.matrix.key
+    columns:
+      near:
+        key.column_net: P15
+      home:
+        key:
+          column_net: P14
+          splay: -thumbsplay
+          origin: [-10, thumb_offset]
+      far:
+        key:
+          column_net: P16
+          splay: -thumbsplay
+          origin: [-10, thumb_offset]
+      farthest:
+        key:
+          column_net: P10
+          splay: -thumbsplay
+          origin: [-10, thumb_offset]
+    rows:
+      thumb:
+        row_net: P9
+  zones.mcu:
+    anchor:
+      ref: matrix_inner_home
+      shift: [capx+pcbp, (26.5 + -0.5xiao_y)]
+    key:
+      width: xiao_x
+      height: xiao_y
+  zones.trrs:
+    key:
+      width: 12
+      height: 6
+    anchor:
+      ref: matrix_inner_home
+      shift: [5, -21]
+  zones./mounting_hole_*/:
+    key:
+      width: 1
+      height: 1
+    anchor:
+      ref: matrix_outer_home
+      shift: [0, -0.55ky-pcbp]
+  zones.mounting_hole_2:
+    anchor:
+      ref: matrix_outer_top
+      shift: [0, 0.55ky+pcbp]
+  zones.mounting_hole_3:
+    anchor:
+      ref: matrix_middle_bottom
+      shift: [-9, -31]
+  zones.mounting_hole_4:
+    anchor:
+      ref: matrix_middle_home
+      shift: [-0.5kx-pcbp-1, 0.5ky]
+  zones.mounting_hole_5:
+    anchor:
+      ref: matrix_inner_top
+      shift: [-5, 0.55ky+pcbp]
+  zones.mounting_hole_6:
+    anchor:
+      ref: matrix_inner_home
+      shift: [0, -0.5ky-pcbp]
+  zones.mounting_hole_7:
+    anchor:
+      ref: thumbcluster_home_thumb
+      shift: [0.5kx+pcbp, 0]
+  zones.mounting_hole_8:
+    anchor:
+      ref: thumbcluster_farthest_thumb
+      shift: [0.5kx+pcbp+0.5, 0]
+outlines:
+  raw:
+    - what: rectangle
+      where:
+        - /thumbcluster_*/
+        - /matrix_*/
+      asym: source
+      size: [kx + kp, ky + kp]
+      corner: kp
+  trrs:
+    - what: rectangle
+      where:
+        ref: trrs
+      size: [12, 6]
+  keycaps:
+    - what: rectangle
+      where:
+        - /thumbcluster_*/
+        - /matrix_*/
+      size: [capx, capy]
+  key_punchout:
+    - what: rectangle
+      where:
+        - /thumbcluster_*/
+        - /matrix_*/
+      asym: source
+      size: [kx, ky]
+  mcu_punchout:
+    - what: rectangle
+      fillet: 3
+      where:
+        - /mcu/
+      size: [xiao_x+1, xiao_y+1]
+  plate:
+    - what: polygon
+      fillet: 3
+      points:
+        - ref: matrix_middle_top
+          shift: [0.5kx+pcbp, 0.5kx+pcbp]
+        - ref: matrix_middle_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp]
+        - ref: matrix_ring_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp]
+        - ref: matrix_pinky_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp]
+        - ref: matrix_outer_top
+          shift: [-0.5kx-pcbp, 0.5ky+pcbp]
+        - ref: matrix_outer_home
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-2]
+        - ref: matrix_pinky_bottom
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp]
+        - ref: matrix_pinky_bottom
+          shift: [0.5kx+pcbp, -0.5ky-pcbp]
+        - ref: thumbcluster_near_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp]
+        - ref: thumbcluster_home_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+pcbp+5, -0.5ky-pcbp]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+pcbp+5, 0.5ky+pcbp]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-pcbp, 0.5ky+pcbp]
+        - ref: thumbcluster_far_thumb
+          shift: [0.5kx+pcbp, 0.5ky+pcbp]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-pcbp, 0.5ky+pcbp]
+        - ref: thumbcluster_home_thumb
+          shift: [0.5kx+pcbp, 0.5ky+pcbp]
+        - ref: mcu
+          shift: [-0.5xiao_x, -0.5xiao_y-pcbp]
+        - ref: mcu
+          shift: [0.5xiao_x+pcbp, -0.5xiao_y-pcbp]
+        - ref: mcu
+          shift: [0.5xiao_x+pcbp, 0.5xiao_y+pcbp]
+        - ref: mcu
+          shift: [-0.5xiao_x-pcbp, 0.5xiao_y+pcbp]
+        - ref: matrix_index_top
+          shift: [0.5kx+pcbp, 0.5ky+pcbp]
+  screw_holes:
+    - what: circle
+      where:
+        - /mounting_hole_*/
+      radius: 1
+  baseplate:
+    - plate
+    - -screw_holes
+pcbs:
+  swallowtail_split:
+    outlines:
+      main:
+        outline: baseplate
+    footprints:
+      - what: choc
+        where:
+          - /matrix_.*/
+          - /thumbcluster_.*/
+        params:
+          hotswap: true
+          keycaps: true
+          reverse: true
+          from: "{{colrow}}"
+          to: "{{column_net}}"
+      - what: diode
+        where:
+          - /matrix_.*/
+          - /thumbcluster_.*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      - what: promicro
+        where:
+          ref:
+            - mcu
+          rotate: -90
+      - what: trrs_tight
+        where:
+          ref:
+            - trrs
+            - shift: [4, 0]
+            - rotate: -99
+        params:
+          A: ""
+          B: VCC
+          C: GND
+          D: P0
+          reverse: true
+          symmetric: true
+      - what: mountinghole
+        where:
+          - /mounting_hole_*/
