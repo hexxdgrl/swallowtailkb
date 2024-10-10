@@ -22,7 +22,8 @@ units:
   xiao_y: 32.5
   sf: 16
   kp: 1
-  pcbp: 4
+  pcbp: 4.5
+  ct: 4
 
 points:
   key:
@@ -182,6 +183,31 @@ outlines:
       where:
         ref: trrs
       size: [12, 6]
+  trrs_punchout:
+    - what: polygon
+      points:
+        - ref: mcu
+          shift: [-0.5xiao_x-10, -0.5xiao_y]
+        - ref: mcu
+          shift: [0.5xiao_x, -0.5xiao_y]
+        - ref: mcu
+          shift: [0.5xiao_x, -0.5xiao_y-pcbp-17]
+        - ref: mcu
+          shift: [-0.5xiao_x-15, -0.5xiao_y-pcbp-15]
+  cable_channel:
+    - what: polygon
+      points:
+        - ref: mcu
+          shift: [2, 0.5xiao_y+ct+pcbp]
+
+        - ref: mcu
+          shift: [-2, 0.5xiao_y+ct+pcbp]
+
+        - ref: mcu
+          shift: [-2, 0.5xiao_y-ct+pcbp]
+
+        - ref: mcu
+          shift: [2, 0.5xiao_y-ct+pcbp]
   keycaps:
     - what: rectangle
       where:
@@ -251,11 +277,66 @@ outlines:
           shift: [-0.5xiao_x-pcbp, 0.5xiao_y+pcbp]
         - ref: matrix_index_top
           shift: [0.5kx+pcbp, 0.5ky+pcbp]
+  case_plate:
+    - what: polygon
+      fillet: 6
+      points:
+        - ref: matrix_middle_top
+          shift: [0.5kx+pcbp+0.5, 0.5kx+pcbp+ct]
+        - ref: matrix_middle_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp+ct]
+        - ref: matrix_ring_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp+ct]
+        - ref: matrix_pinky_top
+          shift: [-0.5kx-pcbp, 0.5kx+pcbp+ct]
+        - ref: matrix_outer_top
+          shift: [-0.5kx-pcbp-ct, 0.5ky+pcbp+0.5ct]
+        - ref: matrix_outer_home
+          shift: [-0.5kx-pcbp-ct, -0.5ky-pcbp-ct]
+        - ref: matrix_pinky_bottom
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-ct]
+        - ref: matrix_pinky_bottom
+          shift: [0.5kx+pcbp-0.25ct, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_near_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_home_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-pcbp, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+pcbp+5+ct+0.5, -0.5ky-pcbp-ct]
+        - ref: thumbcluster_farthest_thumb
+          shift: [0.5kx+pcbp+5+ct-0.5, 0.5ky+pcbp+ct]
+        - ref: thumbcluster_farthest_thumb
+          shift: [-0.5kx-pcbp, 0.5ky+pcbp+ct]
+        - ref: thumbcluster_far_thumb
+          shift: [0.5kx+pcbp, 0.5ky+pcbp+ct]
+        - ref: thumbcluster_far_thumb
+          shift: [-0.5kx-pcbp, 0.5ky+pcbp+ct]
+        - ref: thumbcluster_home_thumb
+          shift: [0.5kx+pcbp+ct, 0.5ky+pcbp+ct]
+        - ref: mcu
+          shift: [-0.5xiao_x+ct, -0.5xiao_y-pcbp-ct]
+        - ref: mcu
+          shift: [0.5xiao_x+pcbp+ct, -0.5xiao_y-pcbp-ct]
+        - ref: mcu
+          shift: [0.5xiao_x+pcbp+ct, 0.5xiao_y+pcbp+ct]
+        - ref: mcu
+          shift: [-0.5xiao_x-pcbp, 0.5xiao_y+pcbp+ct]
+        - ref: matrix_index_top
+          shift: [0.5kx+pcbp+0.5, 0.5ky+pcbp+ct]
   screw_holes:
     - what: circle
       where:
         - /mounting_hole_*/
       radius: 1
+  countersink:
+    - what: circle
+      where:
+        - /mounting_hole_*/
+      radius: 2
   baseplate:
     - plate
     - -screw_holes
@@ -305,3 +386,63 @@ pcbs:
       - what: mountinghole
         where:
           - /mounting_hole_*/
+cases:
+  bottom:
+    - name: plate
+      extrude: 2
+  bottom_outer:
+    - name: case_plate
+      extrude: 2
+  _outerWall:
+    - name: case_plate
+      extrude: 15
+  _outerWallLower:
+    - name: case_plate
+      extrude: 8.5
+  _innerWall:
+    - name: plate
+      extrude: 15
+  _innerWallLower:
+    - name: plate
+      extrude: 6.5
+  _countersink:
+    - name: countersink
+      extrude: 1
+  _screwHoles:
+    - name: screw_holes
+      extrude: 2
+  _trrsCutout:
+    - name: trrs_punchout
+      extrude: 15
+  _cableChannel:
+    - name: cable_channel
+      extrude: 15
+  wall:
+    - what: case
+      name: _outerWall
+      operation: add
+    - what: case
+      name: _trrsCutout
+      operation: subtract
+    - what: case
+      name: _cableChannel
+      operation: subtract
+    - what: case
+      name: _outerWallLower
+      operation: add
+    - what: case
+      name: _innerWall
+      operation: subtract
+  case:
+    - what: case
+      name: bottom_outer
+      operation: add
+    - what: case
+      name: wall
+      operation: add
+    - what: case
+      name: _screwHoles
+      operation: subtract
+    - what: case
+      name: _countersink
+      operation: subtract
